@@ -1,7 +1,7 @@
 /*
 -----------------------------------------
-LeetCode 26
-Remove Duplicates from Sorted Array
+LeetCode 27
+Remove Element
 
 Pattern: Two Pointers
 
@@ -12,13 +12,13 @@ Space Complexity: O(1)
 
 class Solution {
 public:
-    int removeDuplicates(vector<int>& nums) {
+    int removeElement(vector<int>& nums, int val) {
 
-        int k = 1;
+        int k = 0;
 
-        for(int i = 1; i < nums.size(); i++)
+        for(int i = 0; i < nums.size(); i++)
         {
-            if(nums[i] != nums[i-1])
+            if(nums[i] != val)
             {
                 nums[k] = nums[i];
                 k++;
