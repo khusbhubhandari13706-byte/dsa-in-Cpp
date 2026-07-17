@@ -1,0 +1,35 @@
+/*
+-----------------------------------------
+LeetCode 162
+Find Peak Element
+
+Pattern:
+Binary Search on Answer
+
+Approach:
+Compare the middle element with its next element.
+If the array is increasing at mid, move to the right.
+Otherwise, move to the left including mid.
+Continue until low == high.
+
+Time Complexity: O(log n)
+Space Complexity: O(1)
+-----------------------------------------
+*/
+class Solution {
+public:
+    int findPeakElement(vector<int>& nums) {
+        int low=0,high=nums.size()-1;
+        while(low<high)
+        {
+            int mid=low+(high-low)/2;
+            if(nums[mid] > nums[mid+1])
+                high = mid;
+
+            else
+                low = mid + 1;
+        }
+
+        return low;
+    }
+};
