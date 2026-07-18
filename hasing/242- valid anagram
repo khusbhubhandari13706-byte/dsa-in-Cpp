@@ -1,0 +1,48 @@
+/*
+-----------------------------------------
+LeetCode 242 - Valid Anagram
+
+Pattern:
+Hashing (Frequency Counting)
+
+Approach:
+If both strings have different lengths, return false.
+Count the frequency of each character in the first string.
+Decrease the frequency using the second string.
+Finally, check whether every frequency becomes zero.
+
+Time Complexity: O(n)
+
+Space Complexity: O(1)
+(Only lowercase English letters)
+
+Key Learning:
+- Hashing is useful for frequency counting.
+- map.empty() only checks whether the map has keys,
+  not whether all frequencies are zero.
+
+-----------------------------------------
+*/
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        unordered_map<char,int>mpp;
+        if(s.size()!=t.size()) return false;
+        for(int i=0;i!=s.size();i++)
+        {
+            mpp[s[i]]++;
+        }
+        for(int i=0;i!=t.size();i++)
+        {
+            mpp[t[i]]--;
+        }
+        for(auto it : mpp)
+        {
+            if(it.second!=0)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};
