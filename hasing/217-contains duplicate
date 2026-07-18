@@ -1,0 +1,40 @@
+/*
+-----------------------------------------
+LeetCode 217 - Contains Duplicate
+
+Pattern:
+Hashing (unordered_set)
+
+Approach:
+Traverse the array.
+If an element already exists in the unordered_set, return true.
+Otherwise, insert it into the set.
+If no duplicates are found, return false.
+
+Time Complexity: O(n)
+
+Space Complexity: O(n)
+
+Key Learning:
+- unordered_set is useful when we only need to check
+  whether an element already exists.
+
+-----------------------------------------
+*/
+class Solution {
+public:
+    bool containsDuplicate(vector<int>& nums) {
+
+        unordered_set<int> s;
+
+        for(int x : nums)
+        {
+            if(s.find(x) != s.end())
+                return true;
+
+            s.insert(x);
+        }
+
+        return false;
+    }
+};
