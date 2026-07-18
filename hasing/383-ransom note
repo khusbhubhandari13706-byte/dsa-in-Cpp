@@ -1,0 +1,41 @@
+/*
+-----------------------------------------
+LeetCode 383 - Ransom Note
+
+Pattern:
+Hashing (Frequency Counting)
+
+Approach:
+Store the frequency of every character in the magazine.
+Traverse the ransom note.
+If the required character is unavailable, return false.
+Otherwise, decrease its frequency.
+If all characters are successfully matched, return true.
+
+Time Complexity: O(m + n)
+
+Space Complexity: O(1)
+(Only lowercase English letters)
+
+Key Learning:
+- Frequency counting helps compare the availability
+  of characters efficiently.
+
+-----------------------------------------
+*/
+class Solution {
+public:
+    bool canConstruct(string ransomNote, string magazine) {
+        unordered_map<char,int>mpp;
+        for(int i=0;i!=magazine.size();i++)
+        {
+            mpp[magazine[i]]++;
+        }
+        for(int i=0;i!=ransomNote.size();i++)
+        {
+            if(mpp[ransomNote[i]]==0) return false;
+            mpp[ransomNote[i]]--;
+        }
+        return true;
+    }
+};
