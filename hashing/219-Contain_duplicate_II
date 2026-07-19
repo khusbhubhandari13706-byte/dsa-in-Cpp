@@ -1,0 +1,43 @@
+/*
+-----------------------------------------
+LeetCode 219 - Contains Duplicate II
+
+Pattern:Hashing (unordered_map)
+
+Approach:
+1. Store each element along with its latest index in an unordered_map.
+2. While traversing the array:
+   - If the current element already exists in the map,
+     calculate the difference between the current index and
+     the previously stored index.
+   - If the difference is less than or equal to k, return true.
+3. Update the latest index of the current element.
+4. If no such pair is found, return false.
+
+Time Complexity: O(n)
+Space Complexity: O(n)
+Mistakes I Made:
+- Initially tried to store frequency using a map.
+- Realized that the problem requires tracking indices, not counts.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    bool containsNearbyDuplicate(vector<int>& nums, int k) {
+        unordered_map<int,int>mpp;
+        for(int x=0;x<nums.size();x++)
+        {
+            if(mpp.find(nums[x])!=mpp.end())
+            {
+                if(x-mpp[nums[x]]<=k)
+                {
+                    return true;
+                }
+            }
+            mpp[nums[x]]=x;
+
+        }
+        return false;
+    }
+};
