@@ -1,0 +1,45 @@
+/*
+-----------------------------------------
+LeetCode 349 - Intersection of Two Arrays
+Pattern:Hashing (unordered_set)
+
+Approach:
+1. Store all unique elements of the first array in an unordered_set.
+2. Traverse the second array.
+3. If an element exists in the set, add it to the answer.
+4. Remove the element from the set to avoid duplicate entries in the result.
+
+Time Complexity: O(n + m)
+Space Complexity: O(n)
+
+Key Learning:
+- unordered_set automatically stores unique elements.
+- erase() helps avoid adding duplicate elements to the answer.
+- find() performs average O(1) lookup.
+
+Mistakes I Made:
+- Initially forgot to erase the element after adding it to the answer, which caused duplicate values in the output.
+
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    vector<int> intersection(vector<int>& nums1, vector<int>& nums2) {
+        unordered_set<int>s;
+        vector<int>v1;
+        for(int num:nums1)
+        {
+            s.insert(num);
+        }
+        for(int x: nums2)
+        {
+            if(s.find(x)!=s.end())
+            {
+                v1.push_back(x);
+                s.erase(x);
+            }
+        }
+        return v1;
+    }
+};
