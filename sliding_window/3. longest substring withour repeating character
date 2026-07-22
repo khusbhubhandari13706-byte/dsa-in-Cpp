@@ -1,0 +1,48 @@
+/*
+-----------------------------------------
+LeetCode 3 - Longest Substring Without Repeating Characters
+Pattern:Sliding Window + Hashing
+
+Approach:
+1. Use two pointers:
+   - left (l)
+   - right (r)
+2. Use a hash map to store the last index of every character.
+3. Expand the window by moving the right pointer.
+4. If the current character is already present inside the current window,
+   move the left pointer to one position after its previous occurrence.
+5. Update the last occurrence of the current character.
+6. Update the maximum window length.
+
+Why Sliding Window?
+- Every character is visited at most once by the right pointer.
+- The left pointer only moves forward.
+- No unnecessary recomputation is performed.
+
+Time Complexity:O(n)
+Space Complexity:O(min(n, 256))
+-----------------------------------------
+*/
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        int l=0,r=0,longest=1;
+        if(s.empty()) return 0;
+        unordered_map<char,int>mpp;
+        int n=s.size();
+        while(r < n)
+        {
+            if(mpp.find(s[r]) != mpp.end() && mpp[s[r]] >= l)
+            {
+                l = mpp[s[r]] + 1;
+            }
+
+            mpp[s[r]] = r;
+
+            longest = max(longest, r - l + 1);
+
+            r++;
+        }
+        return longest;
+    }
+};
