@@ -1,0 +1,53 @@
+/*
+-----------------------------------------
+LeetCode 205 - Isomorphic Strings
+
+Pattern:Hashing (Two Hash Maps)
+
+Approach:
+1. Use two hash maps:
+   - mp1: stores mapping from string s to string t.
+   - mp2: stores mapping from string t to string s.
+2. Traverse both strings simultaneously.
+3. If a mapping already exists, verify that it matches the current character.
+4. If the mapping is inconsistent, return false.
+5. Otherwise, create/update the mapping.
+6. If the traversal completes successfully, return true.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+Mistakes I Made:
+1. Initially tried solving it using character frequency, but this is not a frequency problem.
+2. Forgot that two different characters cannot map to the same character.
+3. Learned why two hash maps are required instead of one.
+
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    bool isIsomorphic(string s, string t) {
+        if(s.size()!=t.size()) return false;
+        unordered_map<char,char>m1;
+        unordered_map<char,char>m2;
+        for(int i=0;i<s.size();i++)
+        {
+            int ch1=s[i],ch2=t[i];
+            if(m1.find(ch1)!=m1.end())
+            {
+                if(m1[ch1]!=ch2)
+                    return false;
+            }
+            if(m2.find(ch2)!=m2.end())
+            {
+                if(m2[ch2]!=ch1)
+                {
+                    return false;
+                }
+            }
+            m1[ch1]=ch2;
+            m2[ch2]=ch1;
+        }
+        return true;
+    }
+};
