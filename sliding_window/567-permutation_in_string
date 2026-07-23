@@ -1,0 +1,57 @@
+/*-----------------------------------------
+LeetCode 567 - Permutation in String
+Pattern:Fixed Sliding Window + Hashing
+
+Approach:
+1. If s1 is longer than s2, return false.
+2. Store the frequency of characters in s1.
+3. Create another frequency array for the first window of s2 having size equal to s1.
+4. Compare both frequency arrays.
+5. Slide the window:
+   - Add the new character entering the window.
+   - Remove the leftmost character leaving the window.
+6. After each slide, compare the two frequency arrays.
+7. If they match, a permutation exists.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Reason:
+- Two frequency arrays of size 26 are used.
+- 26 is constant because only lowercase English letters are allowed.
+
+Key Learning:
+- Fixed-size Sliding Window is used when the required window length is known.
+- Frequency arrays are faster than unordered_map for lowercase English letters.
+- Only two characters change when the window slides.
+
+Mistakes I Made:  Initially tried counting the frequency of the entire s2 instead of the current window.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        vector<int>freq1(26,0);
+        vector<int>freq2(26,0);
+        if(s1.size()>s2.size()) return false;
+        for(int i=0;i<s1.size();i++)
+        {
+            freq1[s1[i]-'a']++;
+        }
+        int k=s1.size();
+        for(int i=0;i<k;i++)
+        {
+            freq2[s2[i]-'a']++;
+        }
+        if(freq1==freq2) return true;
+        for(int i=k;i<s2.size();i++)
+        {
+            freq2[s2[i]-'a']++;
+            freq2[s2[i-k]-'a']--;
+            if(freq1==freq2) return true;
+        }
+        return false;
+
+    }
+};
