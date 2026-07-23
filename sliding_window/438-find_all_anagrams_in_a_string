@@ -1,0 +1,58 @@
+/*-----------------------------------------
+LeetCode 438 - Find All Anagrams in a String
+Pattern:Fixed Sliding Window + Hashing (Frequency Array)
+
+Approach:
+1. If the pattern length is greater than the string length, return an empty vector.
+2. Create two frequency arrays of size 26:
+   - freqP stores the frequency of characters in the pattern.
+   - freqS stores the frequency of characters in the current window of the string.
+3. Build the frequency array for the pattern and for the first window of the string.
+4. Compare both frequency arrays.
+   - If they are equal, store index 0.
+5. Slide the window one character at a time:
+   - Add the new character entering the window.
+   - Remove the leftmost character leaving the window.
+6. After each slide, compare the frequency arrays.
+   - If they match, store the starting index of the current window.
+7. Return the list of starting indices.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+- Fixed-size Sliding Window is used when the window length is predetermined.
+- Frequency arrays are more efficient than unordered_map when the character set is fixed.
+- When the window slides, only one character is added and one character is removed, making the solution efficient.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        vector<int>v1(26,0);
+        vector<int>v2(26,0);
+        vector<int>ans;
+        int k=p.size();
+        if(p.size()>s.size()) return ans;
+        for(int i=0;i<k;i++)
+        {
+            v1[p[i]-'a']++;
+        }
+        for(int i=0;i<k;i++)
+        {
+            v2[s[i]-'a']++;
+        }
+        if(v1==v2) 
+        {
+            ans.push_back(0);
+        }
+        for(int i=k;i<s.size();i++)
+        {
+            v2[s[i]-'a']++;
+            v2[s[i-k]-'a']--;
+            if(v1==v2) ans.push_back(i-k+1);
+        }
+        return ans;
+    }
+};
