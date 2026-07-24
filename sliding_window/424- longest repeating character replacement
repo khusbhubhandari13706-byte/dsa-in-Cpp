@@ -1,0 +1,45 @@
+/*-----------------------------------------
+LeetCode 424 - Longest Repeating Character Replacement
+
+Pattern:Variable Sliding Window + Hashing
+
+Approach:
+1. Use a frequency array/map to count characters in the current window.
+2. Keep track of the maximum frequency (maxFreq) in the window.
+3. Expand the window by moving the right pointer.
+4. If (window size - maxFreq) > k, shrink the window from the left.
+5. Update the maximum valid window length.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+- Keep the most frequent character and replace the remaining characters.
+- Window is valid if:
+  (window size - maxFreq) <= k
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    int characterReplacement(string s, int k) {
+        int l=0,r=0,len,maxf=0,maxlen=0;
+        vector<int>v1(26);
+        while(r<s.size())
+        {
+            v1[s[r]-'A']++;
+            maxf=max(maxf,v1[s[r]-'A']);
+            if((r-l+1)-maxf>k)
+            {
+                v1[s[l]-'A']--;
+                l++;
+            }
+            else
+            {
+                maxlen=max(maxlen,r-l+1);
+            }
+            r++;
+        }
+        return maxlen;
+    }
+};
