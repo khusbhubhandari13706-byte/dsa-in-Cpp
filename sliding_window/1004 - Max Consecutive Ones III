@@ -1,0 +1,46 @@
+/*-----------------------------------------
+LeetCode 1004 - Max Consecutive Ones III
+
+Pattern:Variable Sliding Window
+
+Approach:
+1. Expand the window using the right pointer.
+2. Count the number of zeros in the current window.
+3. If zeros > k, shrink the window until it becomes valid.
+4. Update the maximum window length.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+- Variable Sliding Window is used when the window size is not fixed.
+- Shrink the window only when the condition becomes invalid.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    int longestOnes(vector<int>& nums, int k) {
+        int l=0,r=0;
+        int zeros=0,max1=0;
+        while(r<nums.size())
+        {
+            if(nums[r]==0)
+            {
+                zeros++;
+            }
+            if(zeros>k)
+            {
+                if(nums[l]==0) zeros--;
+                l++;
+            }
+            if(zeros<=k)
+            {
+                int len=r-l+1;
+                max1=max(max1,len);
+            }
+            r++;
+        }
+        return max1;
+    }
+};
