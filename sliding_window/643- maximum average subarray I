@@ -1,0 +1,43 @@
+/*-----------------------------------------
+LeetCode 643 - Maximum Average Subarray I
+
+Pattern:Fixed Sliding Window
+
+Approach:
+1. Calculate the sum of the current window.
+2. When window size becomes k, update the maximum sum.
+3. Remove the leftmost element and slide the window.
+4. Return maximum average.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+- Fixed-size window is used when the subarray length is given.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    double findMaxAverage(vector<int>& nums, int k) {
+
+        int l = 0;
+        int sum = 0;
+        int maxSum = INT_MIN;
+
+        for(int r = 0; r < nums.size(); r++)
+        {
+            sum += nums[r];
+
+            if(r - l + 1 == k)
+            {
+                maxSum = max(maxSum, sum);
+
+                sum -= nums[l];
+                l++;
+            }
+        }
+
+        return (double)maxSum / k;
+    }
+};
