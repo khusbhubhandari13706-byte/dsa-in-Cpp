@@ -1,0 +1,44 @@
+/*-----------------------------------------
+LeetCode 1456 - Maximum Number of Vowels in a Substring of Given Length
+
+Pattern:Fixed Sliding Window
+
+Approach:
+1. Count vowels in the current window.
+2. When window size becomes k, update the answer.
+3. Remove the left character if it is a vowel.
+4. Add the next character and continue.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+- Only update the count for entering and leaving characters instead of recounting the entire window.
+---------------------------------------
+*/
+
+class Solution {
+public:
+    int maxVowels(string s, int k) {
+        int l=0,r=0;
+        int max1=0,maxv=0;
+        while(r<s.size())
+        {
+            if(s[r]=='a' ||s[r]=='e' ||s[r]=='i' ||s[r]=='o' ||s[r]=='u')
+            {
+                max1++;
+            }
+            if(r-l+1==k)
+            {
+                maxv=max(max1,maxv);
+                if(s[l]=='a' ||s[l]=='e' ||s[l]=='i' ||s[l]=='o' ||s[l]=='u')
+                {
+                    max1--;
+                }
+                l++;
+            }
+            r++;
+        }
+        return maxv;
+    }
+};
