@@ -1,0 +1,37 @@
+/*-----------------------------------------
+LeetCode 904 - Fruit Into Baskets
+Pattern:Variable Sliding Window + Hash Map
+
+Approach:
+1. Expand the window using the right pointer.
+2. Store the frequency of each fruit in a hash map.
+3. If the number of distinct fruits becomes greater than 2, shrink the window from the left.
+4. Update the maximum window length.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    int totalFruit(vector<int>& fruits) {
+        int l=0,r=0,maxlen=0;
+        unordered_map<int,int>mpp;
+        while(r<fruits.size())
+        {
+            mpp[fruits[r]]++;
+            if(mpp.size()>2)
+            {
+                mpp[fruits[l]]--;
+                if(mpp[fruits[l]]==0) mpp.erase(fruits[l]);
+                l++;
+            }
+            else{
+                maxlen=max(maxlen,r-l+1);
+            }
+            r++;
+        }
+        return maxlen;
+    }
+};
