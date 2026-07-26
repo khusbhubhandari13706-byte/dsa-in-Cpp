@@ -1,0 +1,42 @@
+/*-----------------------------------------
+LeetCode 209 - Minimum Size Subarray Sum
+Pattern:Variable Sliding Window
+
+Approach:
+1. Expand the window by adding the current element to the sum.
+2. While the window sum is greater than or equal to the target:
+   - Update the minimum window length.
+   - Remove the leftmost element from the sum.
+   - Shrink the window.
+3. Return 0 if no valid subarray exists.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+
+        int l = 0;
+        int sum = 0;
+        int minLen = nums.size()+1;
+
+        for(int r = 0; r < nums.size(); r++)
+        {
+            sum += nums[r];
+
+            while(sum >= target)
+            {
+                minLen = min(minLen, r - l + 1);
+
+                sum -= nums[l];
+                l++;
+            }
+        }
+
+        if(minLen!=nums.size()+1) return minLen;
+        else return 0;
+    }
+};
