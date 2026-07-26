@@ -1,0 +1,37 @@
+/*-----------------------------------------
+LeetCode 1493 - Longest Subarray of 1's After Deleting One Element
+Pattern:Variable Sliding Window
+
+Approach:
+1. Expand the window using the right pointer.
+2. Count the number of zeros in the current window.
+3. If zeros become greater than 1, shrink the window until it becomes valid.
+4. Update the maximum window length.
+5. Return maxLength - 1 because one element must be deleted.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums) {
+        int l=0,r=0,zeros=0,maxlen=0;
+        while(r<nums.size())
+        {
+            if(nums[r]==0) zeros++;
+            if(zeros>1)
+            {
+                if(nums[l]==0) zeros--;
+                l++;
+            }
+            else
+            {
+                maxlen=max(maxlen,r-l+1);
+            }
+            r++;
+        }
+        return maxlen-1;
+    }
+};
