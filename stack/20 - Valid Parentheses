@@ -1,0 +1,44 @@
+/*-----------------------------------------
+LeetCode 20 - Valid Parentheses
+Pattern:Stack
+
+Approach:
+1. Push all opening brackets onto the stack.
+2. For every closing bracket, check whether the stack is empty.
+3. Compare the top element with the current closing bracket.
+4. If they match, pop the stack; otherwise return false.
+5. The string is valid only if the stack is empty at the end.
+
+Time Complexity:O(n)
+Space Complexity:O(n)
+-----------------------------------------
+*/
+class Solution {
+public:
+    bool isValid(string s) {
+        stack<char>st;
+        for(int i=0;i<s.size();i++)
+        {
+            char ch=s[i];
+            if(ch=='(' || ch=='{' || ch=='[')
+            {
+                st.push(ch);
+            }
+            else
+            {
+                if(st.empty()) return false;
+                int ch2=st.top();
+                if(ch==']' && ch2=='[' || ch==')' && ch2=='(' || ch=='}' && ch2=='{')
+                {
+                    st.pop();
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+        if(st.empty()) return true;
+        else return false;
+    }
+};
