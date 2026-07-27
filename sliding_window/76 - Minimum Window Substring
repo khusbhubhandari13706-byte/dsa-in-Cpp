@@ -1,0 +1,56 @@
+/*-----------------------------------------
+LeetCode 76 - Minimum Window Substring
+Pattern:Variable Sliding Window + Hash Map
+
+Approach:
+1. Store the frequency of characters in the target string.
+2. Expand the window using the right pointer.
+3. Count matched characters.
+4. Once all characters are matched, shrink the window from the left to find the minimum valid window.
+5. Return the smallest valid substring.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+- Instead of comparing two frequency maps, maintain the count of matched characters.
+- Shrink the window while it remains valid to get the minimum answer.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int l=0,r=0,matched=0,minlen=s.size()+1,start=0;
+        if(t.size()>s.size()) return "";
+        unordered_map<char,int>mpp;
+        for(char ch:t) mpp[ch]++;
+        while(r<s.size())
+        {
+            int ch=s[r];
+            if(mpp.find(ch)!=mpp.end())
+            {
+                mpp[ch]--;
+                if(mpp[ch]>=0) matched++;
+            }
+            while(matched==t.size())
+            {
+                if(r - l + 1 < minlen)
+                {
+                    minlen = r - l + 1;
+                    start = l;
+                }
+                char left=s[l];
+                if(mpp.find(left)!=mpp.end())
+                {
+                    mpp[left]++;
+                    if(mpp[left]>0)matched--;
+                }
+                l++;
+            }
+            r++;
+        }
+        if(minlen==s.size()+1) return "";
+        return s.substr(start,minlen);
+    }
+};
