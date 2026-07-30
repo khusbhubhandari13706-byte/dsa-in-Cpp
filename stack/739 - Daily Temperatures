@@ -1,0 +1,41 @@
+/*-----------------------------------------
+LeetCode 739 - Daily Temperatures
+Pattern:Monotonic Decreasing Stack (Indices)
+
+Approach:
+1. Traverse the temperature array from right to left.
+2. Store indices in a monotonic decreasing stack.
+3. Pop all indices whose temperatures are less than or equal to the current temperature.
+4. If the stack becomes empty, there is no warmer day, so the answer is 0.
+5. Otherwise, the difference between the current index and the top index of the stack gives the number of days to wait.
+6. Push the current index onto the stack.
+
+Time Complexity:O(n)
+Space Complexity:O(n)
+-----------------------------------------
+*/
+class Solution {
+public:
+    vector<int> dailyTemperatures(vector<int>& temperatures) {
+        int n=temperatures.size();
+        vector<int>answer(n);
+        stack<int>s1;
+        for(int i=n-1;i>=0;i--)
+        {
+            while(!s1.empty() && temperatures[s1.top()]<=temperatures[i])
+            {
+                s1.pop();
+            }
+            if(s1.empty())
+            {
+                answer[i]=0;
+            }
+            else
+            {
+                answer[i]=s1.top()-i;
+            }
+            s1.push(i);
+        }
+        return answer;
+    }
+};
