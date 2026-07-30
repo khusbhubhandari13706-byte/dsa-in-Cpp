@@ -1,0 +1,42 @@
+/*-----------------------------------------
+LeetCode 503 - Next Greater Element II
+Pattern:Monotonic Decreasing Stack + Circular Array
+
+Approach:
+1. Traverse the array from right to left for a total of 2*n iterations.
+2. Use i % n to simulate a circular array.
+3. Maintain a monotonic decreasing stack by removing all smaller or equal elements.
+4. During the second half of the traversal (i < n), record the next greater element.
+5. If the stack is empty, the answer is -1; otherwise, the top of the stack is the next greater element.
+6. Push the current value onto the stack.
+
+Time Complexity:O(n)
+Space Complexity:O(n)
+
+Key Learning:
+- Traversing 2*n times simulates a circular array without creating a new array.
+- The modulo operator (%) allows us to revisit elements efficiently.
+- A monotonic decreasing stack helps find the next greater element in linear time.
+-----------------------------------------
+*/
+class Solution {
+public:
+    vector<int> nextGreaterElements(vector<int>& nums) {
+        int n=nums.size();
+        vector<int>ans(n);
+        stack<int>s1;
+        for(int i=2*n-1;i>=0;i--)
+        {
+            while(!s1.empty() && s1.top()<=nums[i%n])
+            {
+                s1.pop();
+            }
+            if(i<n)
+            {
+                ans[i]=s1.empty()?-1:s1.top();
+            }
+            s1.push(nums[i%n]);
+        }
+        return ans;
+    }
+};
