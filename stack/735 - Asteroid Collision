@@ -1,0 +1,62 @@
+/*-----------------------------------------
+LeetCode 735 - Asteroid Collision
+Pattern:Stack Simulation
+
+Approach:
+1. Traverse each asteroid from left to right.
+2. Store surviving asteroids in a stack.
+3. Collision happens only when:
+   - Stack top is positive
+   - Current asteroid is negative
+4. Compare their absolute values:
+   - Smaller asteroid is destroyed.
+   - If both are equal, both are destroyed.
+   - Larger asteroid survives.
+5. If the current asteroid survives, push it into the stack.
+6. Finally, transfer the stack elements into the answer vector.
+
+Time Complexity:O(n)
+Space Complexity:O(n)
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    vector<int> asteroidCollision(vector<int>& asteroids) {
+        stack<int>s1;
+        int n=asteroids.size();
+        for(int x:asteroids)
+        {
+            bool alive=true;
+            while(alive && !s1.empty() && x<0 && s1.top()>0)
+            {
+                if(s1.top()<abs(x))
+                {
+                    s1.pop();
+                }
+                else if(s1.top()==abs(x))
+                {
+                    s1.pop();
+                    alive=false;
+                }
+                else
+                {
+                    alive=false;
+                }
+                
+            }
+            if(alive)
+            {
+                    s1.push(x);
+            }
+
+        }
+        vector<int>ans(s1.size());
+        for(int i=s1.size()-1;i>=0;i--)
+        {
+            ans[i]=s1.top();
+            s1.pop();
+        }
+        return ans;
+    }
+};
