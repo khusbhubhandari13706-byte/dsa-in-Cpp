@@ -1,0 +1,61 @@
+/*-----------------------------------------
+LeetCode 42 - Trapping Rain Water
+Pattern:Two Pointers
+
+Approach:
+1. Use left and right pointers from both ends.
+2. Maintain the maximum height seen from both sides.
+3. Process the side with the smaller height.
+4. If current height is smaller than the maximum,
+   add the trapped water.
+5. Move the corresponding pointer inward.
+
+Time Complexity:
+O(n)
+
+Space Complexity:
+O(1)
+
+Key Learning:
+- Water trapped = maxHeight - currentHeight.
+- Two pointers allow solving the problem without extra arrays.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    int trap(vector<int>& height) {
+        int n=height.size();
+        int l=0,r=n-1,lmax=0,rmax=0,total=0;
+        while(l<r)
+        {
+            if(height[l]<height[r])
+            {
+                if(lmax>height[l])
+                {
+                    total=total+(lmax-height[l]);
+                }
+                else
+                {
+                    lmax=height[l];
+                }
+                l++;
+            }
+            else
+            {
+                if(rmax>height[r])
+                {
+                    total=total+(rmax-height[r]);
+                }
+                else
+                {
+                    rmax=height[r];
+                }
+                r--;
+            }
+
+
+        }
+        return total;
+    }
+};
