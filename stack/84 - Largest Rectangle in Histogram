@@ -1,0 +1,49 @@
+/*-----------------------------------------
+LeetCode 84 - Largest Rectangle in Histogram
+Pattern:Monotonic Increasing Stack
+
+Approach:
+1. Store indices of increasing-height bars in a stack.
+2. When a smaller bar is found, pop taller bars.
+3. The current index acts as NSE.
+4. The new stack top acts as PSE.
+5. Calculate width = NSE - PSE - 1.
+6. Calculate area = height × width.
+7. Process remaining bars after the loop.
+
+Time Complexity:O(n)
+Space Complexity:O(n)
+
+Key Learning:
+- Use a monotonic stack to find previous and next smaller elements.
+- Width = NSE - PSE - 1.
+-----------------------------------------
+*/
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& heights) {
+        stack<int> s1;
+        int n=heights.size(),pse,nse,element,maxarea=0;
+        for(int i=0;i<n;i++)
+        {
+            while(!s1.empty() && heights[i]<heights[s1.top()])
+            {
+                element=s1.top();
+                nse=i;
+                s1.pop();
+                pse=s1.empty()?-1:s1.top();
+                maxarea=max(maxarea,heights[element]*(nse-pse-1));
+            }
+            s1.push(i);
+        }
+        while(!s1.empty())
+        {
+            nse=n;
+            element=s1.top();
+            s1.pop();
+            pse=s1.empty()?-1:s1.top();
+            maxarea=max(maxarea,heights[element]*(nse-pse-1));
+        }
+        return maxarea;
+    }
+};
