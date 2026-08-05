@@ -1,0 +1,44 @@
+/*-----------------------------------------
+LeetCode 901 - Online Stock Span
+Pattern:Monotonic Decreasing Stack
+
+Approach:
+1. Store pairs of (price, span) in the stack.
+2. For each new price, remove all previous prices
+   smaller than or equal to it.
+3. Add their spans to the current span.
+4. Push the current price and its calculated span.
+5. The resulting span is the number of consecutive
+   previous days with price <= current price.
+
+Time Complexity:Amortized O(1) per next() call
+Space Complexity:O(n)
+-----------------------------------------
+*/
+
+class StockSpanner {
+public:
+    stack<pair<int,int>>s1;
+    StockSpanner() {
+        
+    }
+    
+    int next(int price) {
+        int count=1;
+        while(!s1.empty() && price>=s1.top().first)
+        {
+            
+            count=count+s1.top().second;
+            s1.pop();
+        }
+        s1.push({price,count});
+        
+        return count;
+    }
+};
+
+/**
+ * Your StockSpanner object will be instantiated and called as such:
+ * StockSpanner* obj = new StockSpanner();
+ * int param_1 = obj->next(price);
+ */
