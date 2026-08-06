@@ -1,0 +1,64 @@
+/*-----------------------------------------
+LeetCode 907 - Sum of Subarray Minimums
+Pattern:Monotonic Stack
+
+Approach:
+1. Find Previous Smaller Element (PSE) and
+   Next Smaller Element (NSE) for every element.
+2. For each arr[i]:
+   - left = i - PSE
+   - right = NSE - i
+3. Number of subarrays where arr[i] is the minimum:
+   left * right
+4. Contribution of arr[i]:
+   arr[i] * left * right
+5. Add all contributions and take modulo 1e9 + 7.
+
+Time Complexity:O(n)
+Space Complexity:O(n)
+
+Key Learning:
+- Each element contributes to multiple subarrays.
+- PSE and NSE determine how many subarrays use
+  that element as their minimum.
+- Use long long because the multiplication can
+  exceed int range.
+- Modulo 1e9 + 7 prevents overflow in the final sum.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    int sumSubarrayMins(vector<int>& arr) {
+        int n = arr.size();
+        vector<int> pse(n);
+        vector<int> nse(n);
+
+        stack<int> st;
+        for (int i = 0; i < n; i++) {
+            while (!st.empty() && arr[st.top()] > arr[i]) {
+                int element = st.top();
+                st.pop();
+                nse[element] = i;
+                pse[element] = st.empty() ? -1 : st.top();
+            }
+
+            st.push(i);
+        }
+        while (!st.empty()) {
+            int element = st.top();
+            st.pop();
+            nse[element] = n;
+            pse[element] = st.empty() ? -1 : st.top();
+        }
+        const long long MOD = 1e9 + 7;
+        long long total = 0;
+        for (int i = 0; i < n; i++) {
+            long long left = i - pse[i];
+            long long right = nse[i] - i;
+            long long contribution =1LL * arr[i] * left * right;
+            total = (total + contribution) % MOD;
+        }
+        return total;
+    }
+};
