@@ -1,0 +1,103 @@
+/*-----------------------------------------
+LeetCode 2104 - Sum of Subarray Ranges
+Pattern:Monotonic Stack
+
+Approach:
+1. Find PSE and NSE for every element to calculate
+   its contribution as a subarray minimum.
+2. Find PGE and NGE for every element to calculate
+   its contribution as a subarray maximum.
+3. For each element:
+   Minimum contribution =
+   nums[i] * (i - PSE) * (NSE - i)
+
+   Maximum contribution =
+   nums[i] * (i - PGE) * (NGE - i)
+4. Final answer = Total Maximum - Total Minimum.
+
+Time Complexity:O(n)
+Space Complexity:O(n)
+
+Key Learning:
+- An element contributes to many subarrays.
+- PSE/NSE determine its minimum contribution.
+- PGE/NGE determine its maximum contribution.
+- Answer = sum of maximums - sum of minimums.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    long long subArrayRanges(vector<int>& nums) {
+
+        int n = nums.size();
+
+        vector<int> pse(n);
+        vector<int> nse(n);
+        vector<int> pge(n);
+        vector<int> nge(n);
+
+        stack<int> s1;
+        stack<int> s2;
+        //for next and previous smaller
+        for(int i = 0; i < n; i++)
+        {
+            while(!s1.empty() && nums[s1.top()] > nums[i])
+            {
+                int element = s1.top();
+                s1.pop();
+
+                nse[element] = i;
+                pse[element] = s1.empty() ? -1 : s1.top();
+            }
+
+            s1.push(i);
+        }
+        while(!s1.empty())
+        {
+            int element = s1.top();
+            s1.pop();
+            nse[element] = n;
+            pse[element] = s1.empty() ? -1 : s1.top();
+        }
+         
+        //for next and previous greater
+        for(int i = 0; i < n; i++)
+        {
+            while(!s2.empty() && nums[s2.top()] < nums[i])
+            {
+                int element = s2.top();
+                s2.pop();
+
+                nge[element] = i;
+                pge[element] = s2.empty() ? -1 : s2.top();
+            }
+
+            s2.push(i);
+        }
+        while(!s2.empty())
+        {
+            int element = s2.top();
+            s2.pop();
+
+            nge[element] = n;
+            pge[element] = s2.empty() ? -1 : s2.top();
+        }
+
+        long long small = 0;
+        long long large = 0;
+        for(int i = 0; i < n; i++)
+        {
+            long long left = i - pse[i];
+            long long right = nse[i] - i;
+
+            long long left2 = i - pge[i];
+            long long right2 = nge[i] - i;
+
+            small += 1LL * left * right * nums[i];
+            large += 1LL * left2 * right2 * nums[i];
+        }
+
+        return large - small;
+    }
+};
