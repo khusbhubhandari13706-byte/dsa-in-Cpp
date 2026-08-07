@@ -1,0 +1,55 @@
+/*-----------------------------------------
+LeetCode 402 - Remove K Digits
+Pattern:Monotonic Increasing Stack
+
+Approach:
+1. Traverse the digits from left to right.
+2. If the current digit is smaller than the stack top,
+   remove the larger digit while k > 0.
+3. Push the current digit into the stack.
+4. If k is still left, remove digits from the end.
+5. Reverse the stack result.
+6. Remove leading zeros.
+7. If nothing remains, return "0".
+
+Time Complexity:O(n)
+Space Complexity:O(n)
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        if(k >= num.size())
+            return "0";
+        stack<char> st;
+        for(char ch : num)
+        {
+            while(!st.empty() && k > 0 && st.top() > ch)
+            {
+                st.pop();
+                k--;
+            }
+            st.push(ch);
+        }
+        while(k > 0)
+        {
+            st.pop();
+            k--;
+        }
+        string ans = "";
+        while(!st.empty())
+        {
+            ans += st.top();
+            st.pop();
+        }
+        reverse(ans.begin(), ans.end());
+        int i = 0;
+        while(i < ans.size() && ans[i] == '0')
+            i++;
+        ans = ans.substr(i);
+        if(ans.empty())
+            return "0";
+        return ans;
+    }
+};
