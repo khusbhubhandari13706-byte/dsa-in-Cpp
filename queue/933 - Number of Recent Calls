@@ -1,0 +1,37 @@
+/*
+-----------------------------------------
+LeetCode 933 - Number of Recent Calls
+
+Pattern:Queue + Sliding Window
+
+Approach:
+1. Push every new timestamp into the queue.
+2. Remove timestamps where:
+   t - q.front() > 3000
+3. The remaining queue contains calls in
+   the range [t - 3000, t].
+4. Return q.size().
+
+Time Complexity:O(n) 
+Space Complexity:O(n)
+-----------------------------------------
+*/
+
+class RecentCounter {
+public:
+    int counter;
+    queue<int>q1;
+    RecentCounter() {
+        counter=0;
+    }
+    
+    int ping(int t) {
+        q1.push(t);
+        while(t-q1.front()>3000)
+        {
+            q1.pop();
+        }
+        
+        return q1.size();
+    }
+};
