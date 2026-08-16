@@ -1,0 +1,78 @@
+/*
+-----------------------------------------
+LeetCode 622 - Design Circular Queue
+
+Pattern:Queue + Circular Array
+
+Approach:
+1. Use a vector to store queue elements.
+2. Maintain front, rear, size and capacity.
+3. Use modulo to make the queue circular:
+   (index + 1) % capacity
+4. isEmpty() checks size == 0.
+5. isFull() checks size == capacity.
+
+Time Complexity:O(1) per operation
+
+Space Complexity:O(k)
+
+Key Learning:
+Circular Queue reuses empty spaces by wrapping
+the rear/front around using modulo.
+-----------------------------------------
+*/
+
+class MyCircularQueue {
+public:
+    vector<int> q;
+    int front,rear,size,capacity;
+
+    MyCircularQueue(int k) {
+        q.resize(k);
+        front = -1;
+        rear = -1;
+        size = 0;
+        capacity = k;
+    }
+
+    bool enQueue(int value) {
+        if(isFull())  return false;
+        rear = (rear + 1) % capacity;
+        q[rear] = value;
+        if(front == -1) front = rear;
+        size++;
+        return true;
+    }
+
+    bool deQueue() {
+        if(isEmpty())
+            return false;
+        if(size == 1) {
+            front = -1;
+            rear = -1;
+        }
+        else {
+            front = (front + 1) % capacity;
+        }
+        size--;
+        return true;
+    }
+
+    int Front() {
+        if(isEmpty()) return -1;
+        return q[front];
+    }
+
+    int Rear() {
+        if(isEmpty()) return -1;
+        return q[rear];
+    }
+
+    bool isEmpty() {
+        return size == 0;
+    }
+
+    bool isFull() {
+        return size == capacity;
+    }
+};
