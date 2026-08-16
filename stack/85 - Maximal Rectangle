@@ -1,0 +1,88 @@
+/*
+-----------------------------------------
+LeetCode 85 - Maximal Rectangle
+Pattern:Monotonic Stack + Matrix
+
+Approach:
+1. Maintain a heights array for every column.
+2. For each row:
+   - If matrix[i][j] == '1', increase heights[j].
+   - If matrix[i][j] == '0', reset heights[j] to 0.
+3. Treat the heights of each row as a histogram.
+4. Apply Largest Rectangle in Histogram (LC84).
+5. Keep track of the maximum area.
+
+Time Complexity:O(rows * columns)
+Space Complexity:O(columns)
+
+Key Learning:
+Maximal Rectangle can be reduced to multiple
+Largest Rectangle in Histogram problems.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+
+    int lhist(vector<int>& heights) {
+        stack<int> st;
+        int n = heights.size();
+        int maxarea = 0;
+
+        for(int i = 0; i < n; i++) {
+
+            while(!st.empty() && heights[i] < heights[st.top()]) {
+
+                int element = st.top();
+                st.pop();
+
+                int nse = i;
+                int pse = st.empty() ? -1 : st.top();
+
+                maxarea = max(maxarea,
+                              heights[element] * (nse - pse - 1));
+            }
+
+            st.push(i);
+        }
+
+        while(!st.empty()) {
+
+            int element = st.top();
+            st.pop();
+
+            int nse = n;
+            int pse = st.empty() ? -1 : st.top();
+
+            maxarea = max(maxarea,
+                          heights[element] * (nse - pse - 1));
+        }
+
+        return maxarea;
+    }
+
+    int maximalRectangle(vector<vector<char>>& matrix) {
+
+        int rows = matrix.size();
+        int column = matrix[0].size();
+
+        int maxarea = 0;
+
+        vector<int> heights(column, 0);
+
+        for(int i = 0; i < rows; i++) {
+
+            for(int j = 0; j < column; j++) {
+
+                if(matrix[i][j] == '1')
+                    heights[j]++;
+                else
+                    heights[j] = 0;
+            }
+
+            maxarea = max(maxarea, lhist(heights));
+        }
+
+        return maxarea;
+    }
+};
