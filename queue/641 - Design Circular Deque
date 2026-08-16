@@ -1,0 +1,85 @@
+/*
+-----------------------------------------
+LeetCode 641 - Design Circular Deque
+
+Pattern:Deque + Circular Array
+
+Approach:
+1. Use a vector to implement the deque.
+2. Maintain front, rear, size and capacity.
+3. insertFront() moves front backward circularly.
+4. insertLast() moves rear forward circularly.
+5. deleteFront() moves front forward.
+6. deleteLast() moves rear backward.
+7. Modulo (%) is used for circular movement.
+8. size tracks whether the deque is empty or full.
+
+Time Complexity:O(1) per operation
+Space Complexity:O(k)
+
+Key Learning:
+A Circular Deque allows insertion and deletion from both ends while reusing the fixed array space.
+-----------------------------------------
+*/
+
+class MyCircularDeque {
+public:
+    int front, rear, size, capacity;
+    vector<int> dq;
+
+    MyCircularDeque(int k) {
+        dq.resize(k);
+        capacity = k;
+        size = 0;
+        front = 0;     
+        rear = k - 1;  
+    }
+
+    bool insertFront(int value) {
+        if (isFull()) return false;
+        front = (front - 1 + capacity) % capacity;  // move front backward circularly
+        dq[front] = value;
+        size++;
+        return true;
+    }
+
+    bool insertLast(int value) {
+        if (isFull()) return false;
+        rear = (rear + 1) % capacity;  // move rear forward
+        dq[rear] = value;
+        size++;
+        return true;
+    }
+
+    bool deleteFront() {
+        if (isEmpty()) return false;
+        front = (front + 1) % capacity;  // move front forward
+        size--;
+        return true;
+    }
+
+    bool deleteLast() {
+        if (isEmpty()) return false;
+        rear = (rear - 1 + capacity) % capacity;  // move rear backward
+        size--;
+        return true;
+    }
+
+    int getFront() {
+        if (isEmpty()) return -1;
+        return dq[front];
+    }
+
+    int getRear() {
+        if (isEmpty()) return -1;
+        return dq[rear];
+    }
+
+    bool isEmpty() {
+        return size == 0;
+    }
+
+    bool isFull() {
+        return size == capacity;
+    }
+};
