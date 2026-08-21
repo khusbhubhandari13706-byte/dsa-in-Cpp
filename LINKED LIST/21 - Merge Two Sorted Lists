@@ -1,0 +1,70 @@
+/*
+-----------------------------------------
+LeetCode 21 - Merge Two Sorted Lists
+
+Pattern:Linked List + Two Pointers
+
+Approach:
+1. Handle the case where either list is empty.
+2. Compare the current nodes of both lists.
+3. Attach the smaller node to the merged list.
+4. Move the corresponding pointer forward.
+5. Attach the remaining nodes after one list ends.
+
+Time Complexity:O(n + m)
+
+Space Complexity:O(1)
+
+Key Learning:
+Use head and tail pointers to merge two sorted linked lists without creating new nodes.
+
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode *l1=list1;
+        ListNode *l2=list2;
+        ListNode *head=NULL;
+        ListNode *tail=NULL;
+        if(list1 == NULL) return list2;
+        if(list2 == NULL) return list1;
+        if(l1->val<=l2->val) 
+        {
+            head=tail=l1;
+            l1=l1->next;
+        }
+        else
+        {
+            head=tail=l2;
+            l2=l2->next;
+        }
+        while(l1!=NULL && l2!=NULL)
+        {
+            if(l1->val<=l2->val)
+            {
+                tail->next=l1;
+                tail=l1;
+                l1=l1->next;
+
+            }
+            else
+            {
+                tail->next=l2;
+                tail=l2;
+                l2=l2->next;
+
+            }
+        }
+        if(l1)
+        {
+            tail->next=l1;
+        }
+        if(l2)
+        {
+            tail->next=l2;
+        }
+        return head;
+    }
+};
