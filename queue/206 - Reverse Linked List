@@ -1,0 +1,35 @@
+/*
+-----------------------------------------
+LeetCode 206 - Reverse Linked List
+Pattern:Linked List + Two Pointers
+
+Approach:
+1. Maintain three pointers: prev, curr and next.
+2. Store curr->next before changing the link.
+3. Reverse the current node's pointer to prev.
+4. Move prev and curr one step forward.
+5. Continue until curr becomes NULL.
+6. prev becomes the new head.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+Reverse linked-list links one node at a time using prev and curr pointers.
+-----------------------------------------
+*/
+class Solution {
+public:
+    ListNode* reverseList(ListNode* head) {
+        ListNode *curr=head;
+        ListNode *prev=NULL;
+        while(curr!=NULL)
+        {
+            ListNode* next=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=next;
+        }
+        return prev;
+    }
+};
