@@ -1,0 +1,46 @@
+/*
+-----------------------------------------
+LeetCode 950 - Reveal Cards In Increasing Order
+Pattern:Queue + Sorting
+
+Approach:
+1. Sort the deck in increasing order.
+2. Store all indices in a queue.
+3. Place the smallest card at the front index.
+4. Move the next index to the back of the queue.
+5. Repeat until all cards are placed.
+
+Time Complexity:O(n log n)
+Space Complexity:O(n)
+
+Key Learning:
+Using a queue of indices simulates the reveal process in reverse order.
+
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    vector<int> deckRevealedIncreasing(vector<int>& deck) {
+        sort(deck.begin(),deck.end());
+        queue<int>q;
+        int n=deck.size();
+        for(int i=0;i<n;i++)
+        {
+            q.push(i);
+        }
+        vector<int>ans(n);
+        for(int card:deck)
+        {
+            int index=q.front();
+            q.pop();
+            ans[index]=card;
+            if(!q.empty())
+            {
+                q.push(q.front());
+                q.pop();
+            }
+        }
+        return ans;
+    }
+};
