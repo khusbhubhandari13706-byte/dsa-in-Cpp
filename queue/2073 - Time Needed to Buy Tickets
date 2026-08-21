@@ -1,0 +1,38 @@
+/*
+-----------------------------------------
+LeetCode 2073 - Time Needed to Buy Tickets
+Pattern:Queue / Circular Queue
+
+Approach:
+1. Store the ticket counts in a circular queue.
+2. Move the front pointer to simulate each person's turn.
+3. Skip people who have already finished.
+4. Decrease the current person's ticket count.
+5. Continue until person k gets all their tickets.
+
+Time Complexity:O(total number of tickets)
+Space Complexity:O(n)
+-----------------------------------------
+*/
+class Solution {
+public:
+    int timeRequiredToBuy(vector<int>& tickets, int k) {
+        int n=tickets.size();
+        vector<int>q(n);
+        int rear=-1,front=-1,count=0;
+        for(int i=0;i<n;i++)
+        {
+            rear=(rear+1)%n;
+            q[rear]=tickets[i];
+        }
+        while(q[k]!=0)
+        {
+            front=(front+1)%n;
+            if(q[front]==0) continue;
+            q[front]--;
+            count++;
+        }
+        return count;
+    }
+};
+
