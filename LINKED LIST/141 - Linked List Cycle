@@ -1,0 +1,43 @@
+/*
+-----------------------------------------
+LeetCode 141 - Linked List Cycle
+Pattern:Linked List + Hash Set
+
+Approach:
+1. Use an unordered_set to store visited node addresses.
+2. Traverse the linked list using temp.
+3. If the current node is already present in the set,
+   a cycle exists.
+4. Otherwise, store the node and move to the next node.
+5. If temp becomes NULL, there is no cycle.
+
+Time Complexity:O(n)
+Space Complexity:O(n)
+
+Key Learning:
+Store node addresses to detect whether the same node is visited again.
+-----------------------------------------
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    bool hasCycle(ListNode *head) {
+        unordered_set<ListNode*>visited;
+        ListNode *temp=head;
+        while(temp!=NULL)
+        {
+            if(visited.count(temp)) return true;
+            visited.insert(temp);
+            temp=temp->next;
+        }
+        return false;
+    }
+};
