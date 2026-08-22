@@ -1,0 +1,51 @@
+/*-----------------------------------------
+LeetCode 83 - Remove Duplicates from Sorted List
+Pattern:Linked List + Two Pointers
+
+Approach:
+1. Use prev and temp pointers.
+2. Since the list is sorted, duplicates are adjacent.
+3. If prev->val == temp->val, skip temp:
+   prev->next = temp->next
+4. Otherwise, move prev forward.
+5. Continue until temp becomes NULL.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+In a sorted linked list, duplicate values occur next to each other, so they can be removed by changing the next pointer.
+
+-----------------------------------------
+*/
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        if(head==NULL) return head;
+        ListNode*temp=head->next;
+        ListNode*prev=head;
+        while(temp!=NULL)
+        {
+            if(prev->val==temp->val)
+            {
+                prev->next=temp->next;
+            }
+            else
+            {
+                prev=temp;
+            }
+            temp=temp->next;
+        }
+        return head;
+    }
+};
