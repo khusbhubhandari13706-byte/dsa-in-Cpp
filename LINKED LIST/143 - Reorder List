@@ -1,0 +1,64 @@
+/*
+-----------------------------------------
+LeetCode 143 - Reorder List
+Pattern:Linked List + Fast & Slow Pointers + Reversal
+
+Approach:
+1. Find the middle of the linked list using
+   slow and fast pointers.
+2. Reverse the second half of the list.
+3. Split the list into two halves.
+4. Merge both halves alternately:
+      First → Last → Second → Second Last → ...
+5. Use temporary pointers to avoid losing nodes.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+This problem combines three important linked-list
+patterns:
+- Finding the middle
+- Reversing a linked list
+- Merging two linked lists alternately
+
+-----------------------------------------
+*/
+
+class Solution {
+public:
+
+    ListNode* reverse2(ListNode* head) {
+        ListNode* prev = NULL;
+        ListNode* curr = head;
+        while (curr != NULL) {
+            ListNode* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
+
+    void reorderList(ListNode* head) {
+        if (head == NULL || head->next == NULL)
+            return;
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while (fast->next != NULL && fast->next->next != NULL) {
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        ListNode* second = reverse2(slow->next);
+        slow->next = NULL;
+        ListNode* first = head;
+        while (first != NULL && second != NULL) {
+            ListNode* firstNext = first->next;
+            ListNode* secondNext = second->next;
+            first->next = second;
+            second->next = firstNext;
+            first = firstNext;
+            second = secondNext;
+        }
+    }
+};
