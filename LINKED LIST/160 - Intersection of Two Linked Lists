@@ -1,0 +1,44 @@
+/*
+-----------------------------------------
+LeetCode 160 - Intersection of Two Linked Lists
+Pattern:Linked List + Hash Set
+
+Approach:
+1. Traverse List A and store every node address in a set.
+2. Traverse List B.
+3. If a node's address is already in the set,
+   it is the intersection node.
+4. Return that node.
+5. If no common node exists, return NULL.
+
+Time Complexity:O(n + m)
+Space Complexity:O(n)
+
+Key Learning:
+Intersection means the same node/address, not just the same node value.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode* curr=headA;
+        unordered_set<ListNode*>visited;
+        while(curr!=NULL)
+        {
+            visited.insert(curr);
+            curr=curr->next;
+        }
+        curr=headB;
+        while(curr!=NULL)
+        {
+            if(visited.count(curr))
+            {
+                return curr;
+            }
+            visited.insert(curr);
+            curr=curr->next;
+        }
+        return NULL;
+    }
+};
