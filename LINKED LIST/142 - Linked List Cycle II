@@ -1,0 +1,37 @@
+/*
+-----------------------------------------
+LeetCode 142 - Linked List Cycle II
+Pattern:Linked List + Hash Set
+
+Approach:
+1. Traverse the linked list using curr.
+2. Store each node's address in an unordered_set.
+3. If a node's address is already present, a cycle exists.
+4. Return that node as the starting point of the cycle.
+5. If curr becomes NULL, no cycle exists.
+
+Time Complexity:O(n)
+Space Complexity:O(n)
+
+Key Learning:
+Store node addresses to detect whether the same node is visited again.
+
+-----------------------------------------
+*/
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        unordered_set<ListNode*>visited;
+        ListNode*curr=head;
+        while(curr!=NULL)
+        {
+            if(visited.count(curr))
+            {
+                return curr;
+            }
+            visited.insert(curr);
+            curr=curr->next;
+        }
+        return NULL;
+    }
+};
