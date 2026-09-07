@@ -1,0 +1,43 @@
+/*
+-----------------------------------------
+LeetCode 328 - Odd Even Linked List
+Pattern:Linked List + Pointer Manipulation
+
+Approach:
+1. Maintain two pointers:
+   - odd → current odd-position node
+   - even → current even-position node
+2. Save the first even node as evenHead.
+3. Connect odd nodes together.
+4. Connect even nodes together.
+5. Finally, attach the even list after the odd list.
+6. Return the original head.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+Rearrange the existing next pointers to separate odd-position and even-position nodes without creating extra nodes.
+
+-----------------------------------------
+*/class Solution {
+public:
+    ListNode* oddEvenList(ListNode* head) {
+        if (!head || !head->next) return head;
+
+        ListNode* odd = head;
+        ListNode* even = head->next;
+        ListNode* evenHead = even; // Save start of even list to attach later
+
+        while (even && even->next) {
+            odd->next = even->next;
+            odd = odd->next;
+            
+            even->next = odd->next;
+            even = even->next;
+        }
+
+        odd->next = evenHead; // Connect end of odd list to head of even list
+        return head;
+    }
+};
