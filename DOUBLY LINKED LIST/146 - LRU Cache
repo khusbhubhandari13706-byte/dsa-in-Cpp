@@ -1,0 +1,135 @@
+/*
+-----------------------------------------
+LeetCode 146 - LRU Cache
+Pattern:HashMap + Doubly Linked List
+
+Approach:
+1. Use a HashMap to store key -> Node* for O(1) lookup.
+2. Use a Doubly Linked List to maintain usage order.
+3. Most recently used nodes are kept near head.
+4. Least recently used node is kept near tail.
+5. get():
+   - If key doesn't exist, return -1.
+   - Move the accessed node to the front.
+6. put():
+   - Update and move existing key to the front.
+   - For a new key, add it to the front.
+   - If capacity is exceeded, remove tail->prev.
+7. Use dummy head and tail nodes to simplify insertion
+   and deletion.
+
+Time Complexity:
+get() -> O(1)
+put() -> O(1)
+
+Space Complexity:O(capacity)
+
+Key Learning:
+HashMap provides O(1) lookup, while the Doubly Linked List provides O(1) insertion and deletion. Together they implement an O(1) LRU Cache.
+
+-----------------------------------------
+*/
+class LRUCache {
+public:
+
+    struct Node {
+        int key;
+        int value;
+
+        Node* prev;
+        Node* next;
+
+        Node(int k, int v) {
+            key = k;
+            value = v;
+            prev = nullptr;
+            next = nullptr;
+        }
+    };
+
+    int capacity;
+
+    Node* head;
+    Node* tail;
+
+    unordered_map<int, Node*> mp;
+
+
+    LRUCache(int capacity) {
+
+        this->capacity = capacity;
+
+        head = new Node(0, 0);
+        tail = new Node(0, 0);
+
+        head->next = tail;
+        tail->prev = head;
+    }
+
+
+    void remove(Node* node) {
+
+        node->prev->next = node->next;
+        node->next->prev = node->prev;
+    }
+
+
+    void add(Node* node) {
+
+        node->next = head->next;
+        node->prev = head;
+
+        head->next->prev = node;
+        head->next = node;
+    }
+
+
+    int get(int key) {
+
+        if (mp.find(key) == mp.end())
+            return -1;
+
+        Node* node = mp[key];
+
+        remove(node);
+        add(node);
+
+        return node->value;
+    }
+
+
+    void put(int key, int value) {
+
+        // Key already exists
+        if (mp.find(key) != mp.end()) {
+
+            Node* node = mp[key];
+
+            node->value = value;
+
+            remove(node);
+            add(node);
+
+            return;
+        }
+
+        // New key
+        Node* node = new Node(key, value);
+
+        mp[key] = node;
+
+        add(node);
+
+        // Capacity exceeded
+        if (mp.size() > capacity) {
+
+            Node* lru = tail->prev;
+
+            remove(lru);
+
+            mp.erase(lru->key);
+
+            delete lru;
+        }
+    }
+};
