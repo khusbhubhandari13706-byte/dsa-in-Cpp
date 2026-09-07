@@ -1,0 +1,76 @@
+/*
+-----------------------------------------
+LeetCode 2 - Add Two Numbers
+Pattern:Linked List + Reversal + Carry
+
+Approach:
+1. Reverse both linked lists so addition can be performed
+   from the least significant digit.
+2. Traverse both lists while maintaining a carry.
+3. Calculate sum of the current digits and carry.
+4. Create a new node using sum % 10.
+5. Update carry using sum / 10.
+6. Reverse the resulting list to get the correct order.
+
+Time Complexity:
+O(n + m)
+
+Space Complexity:
+O(n + m)
+
+Key Learning:
+When digits are stored in forward order, reversing the
+lists makes normal addition possible from right to left.
+
+-----------------------------------------
+*/
+class Solution {
+public:
+
+    ListNode* reverse(ListNode* head) {
+        ListNode* prev = NULL;
+        ListNode* curr = head;
+
+        while (curr != NULL) {
+            ListNode* next = curr->next;
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+        }
+
+        return prev;
+    }
+
+    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
+
+        l1 = reverse(l1);
+        l2 = reverse(l2);
+
+        ListNode dummy(0);
+        ListNode* curr = &dummy;
+
+        int carry = 0;
+
+        while (l1 != NULL || l2 != NULL || carry != 0) {
+
+            int sum = carry;
+
+            if (l1 != NULL) {
+                sum += l1->val;
+                l1 = l1->next;
+            }
+
+            if (l2 != NULL) {
+                sum += l2->val;
+                l2 = l2->next;
+            }
+
+            carry = sum / 10;
+
+            curr->next = new ListNode(sum % 10);
+            curr = curr->next;
+        }
+
+        return reverse(dummy.next);
+    }
+};
