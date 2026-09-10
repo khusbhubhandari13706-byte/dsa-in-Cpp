@@ -1,0 +1,64 @@
+/*
+-----------------------------------------
+LeetCode 234 - Palindrome Linked List
+Pattern:Linked List + Fast & Slow Pointers + Reversal
+
+Approach:
+1. Use slow and fast pointers to find the middle.
+2. Reverse the second half of the linked list.
+3. Compare the first half with the reversed second half.
+4. If all values match, the list is a palindrome.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+Fast & slow pointers help find the middle, and reversing the second half allows comparison without using extra memory.
+-----------------------------------------
+*/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode *reverse(ListNode *head2)
+    {
+        ListNode*curr=head2;
+        ListNode*prev=NULL;
+        while(curr!=NULL)
+        {
+            ListNode*next=curr->next;
+            curr->next=prev;
+            prev=curr;
+            curr=next;
+        }
+        return prev;
+    }
+
+    bool isPalindrome(ListNode* head) {
+        ListNode *slow=head;
+        ListNode *fast=head;
+        while(fast->next!=NULL && fast->next->next!=NULL)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+        ListNode *second=reverse(slow->next);
+        ListNode *first=head;
+        while(second!=NULL)
+        {
+            if(first->val!=second->val) return false;
+            first=first->next;
+            second=second->next;
+        }
+        return true;
+    }
+};
