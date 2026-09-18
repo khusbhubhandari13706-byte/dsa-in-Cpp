@@ -1,0 +1,39 @@
+/*
+-----------------------------------------
+LeetCode 2095 - Delete the Middle Node of a Linked List
+
+Pattern:Fast & Slow Pointers
+
+Approach:
+1. Handle empty and single-node lists separately.
+2. Use slow and fast pointers to find the node
+   just before the middle.
+3. Delete the middle node by changing slow->next.
+4. Return the head of the modified list.
+
+Time Complexity:O(n)
+Space Complexity:O(1)
+
+Key Learning:
+Fast & slow pointers can be used to locate the middleof a linked list efficiently without extra space.
+-----------------------------------------
+*/
+
+class Solution {
+public:
+    ListNode* deleteMiddle(ListNode* head) {
+        if (head == NULL || head->next == NULL)
+            return NULL;
+        ListNode*slow=head;
+        ListNode*fast=head->next->next;
+        while(fast!=NULL && fast->next!=NULL)
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+
+        }
+        slow->next=slow->next->next;
+        return head;
+
+    }
+};
