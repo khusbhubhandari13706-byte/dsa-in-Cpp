@@ -1,44 +1,37 @@
 /*
 -----------------------------------------
 LeetCode 160 - Intersection of Two Linked Lists
-Pattern:Linked List + Hash Set
+
+Pattern:Two Pointers + Linked List
 
 Approach:
-1. Traverse List A and store every node address in a set.
-2. Traverse List B.
-3. If a node's address is already in the set,
-   it is the intersection node.
-4. Return that node.
-5. If no common node exists, return NULL.
+1. Use two pointers, one starting at each head.
+2. When a pointer reaches the end, move it to the other list's head.
+3. Both pointers then travel the same total distance.
+4. If an intersection exists, they meet at the intersection node.
+5. Otherwise, both become NULL.
 
 Time Complexity:O(n + m)
-Space Complexity:O(n)
+Space Complexity:O(1)
 
 Key Learning:
-Intersection means the same node/address, not just the same node value.
+Switching heads makes both pointers travel equal distances, allowing them to meet at the intersection node.
 -----------------------------------------
-*/
 
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
-        ListNode* curr=headA;
-        unordered_set<ListNode*>visited;
-        while(curr!=NULL)
+        ListNode *temp1=headA;
+        ListNode *temp2=headB;
+        if(headA==NULL || headB==NULL) return NULL;
+        while(temp1!=temp2)
         {
-            visited.insert(curr);
-            curr=curr->next;
+            temp1=temp1->next;
+            temp2=temp2->next;
+            if(temp1==temp2) return temp1;
+            else if(temp1==NULL) temp1=headB;
+            else if(temp2==NULL) temp2=headA;
         }
-        curr=headB;
-        while(curr!=NULL)
-        {
-            if(visited.count(curr))
-            {
-                return curr;
-            }
-            visited.insert(curr);
-            curr=curr->next;
-        }
-        return NULL;
+        return temp1;
     }
 };
